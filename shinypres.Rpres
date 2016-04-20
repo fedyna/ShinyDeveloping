@@ -1,0 +1,61 @@
+Developing Data Products: Course Project
+========================================================
+author: Andrey Fedyna
+date: 17.04.2016
+transition: rotate
+
+
+Introduction
+========================================================
+type: white
+
+This presentation is part of the Course Project for the Coursera Developing Data Products class. The peer assessed assignment has two parts. 
+- __First__, we need to create a Shiny application and deploy it on Rstudio's servers.
+- __Second__, we should use Slidify or Rstudio Presenter to prepare a reproducible pitch presentation about the application. 
+
+The app developed for the first part of the assignment is avalilable at:
+https://fedyna.shinyapps.io/ShinyProject
+
+Source code for ui.R and server.R files are available on the GitHub:
+https://github.com/.....
+
+
+Case-Control Study of Esophageal cancer
+========================================================
+type: white
+
+Since malignant diseases are clearly of multifactorial origin, their investigation in man has become increasingly complex, and epidemiological and biostatistical studies on cancer require a correspondingly complex and rigorous methodology.  
+
+The case-control studies are the basis of modern cancer epidemiology.
+
+<small>[INTERNA TIONAL AGENCY FOR RESEARCH ON CANCER](https://www.iarc.fr/en/publications/pdfs-online/stat/sp32/SP32.pdf)</small>
+
+My Application  
+========================================================
+type: white
+
+I took a data frame ___"esoph"___ with records for 88 age/alcohol/tobacco combinations.  
+Look on the effects of alcohol, tobacco and them interaction age-adjusted. 
+```{r eval=TRUE}
+model <- glm(cbind(ncases, ncontrols) ~ agegp + tobgp * alcgp,
+        data = esoph, family = binomial())
+```
+Slide with a Chart
+========================================================
+type: white
+
+```{r echo=FALSE}
+library(datasets); library(ggplot2)
+esoph$alcgp <- gsub("0-39g/day", "0-39", esoph$alcgp)
+esoph$tobgp <- gsub("0-9g/day", "0-9", esoph$tobgp)
+esoph$alcgp <- as.ordered(esoph$alcgp)
+esoph$tobgp <- as.ordered(esoph$tobgp)
+
+g <- qplot(ncases, ncontrols, data=esoph, 
+      facets=tobgp ~ alcgp, color=agegp,
+      xlab="Number of cases", ylab="Number of controls",
+      main = "Alcohol&Smoking(gm/day) and (O)esophageal Cancer")
+g <- g + geom_point( size=4 )
+g
+```
+
